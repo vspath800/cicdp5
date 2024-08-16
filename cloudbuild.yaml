@@ -19,6 +19,17 @@ steps:
   args:
   - 'push'
   - 'gcr.io/gcp-class-1-427416/cicdp5image:$COMMIT_SHA'
+  
+# Steps 4: Kube CTL set Image (should be used for the second run)
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'set'
+  - 'image'
+  - 'deployment/cicdp5deployment'
+  - 'cicdp5image-sha256-1=gcr.io/gcp-class-1-427416/cicdp5image:$COMMIT_SHA'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cicdp5-cluster'
 
 options:
   logging: CLOUD_LOGGING_ONLY
