@@ -14,22 +14,11 @@ steps:
   - 'gcr.io/gcp-class-1-427416/cicdp5image:$COMMIT_SHA'
   - '.'
 
-# Step 3: Push Docker image to Google Container Registry
+# Step 3: Push Docker image to Google Artifactory Registry
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'push'
   - 'gcr.io/gcp-class-1-427416/cicdp5image:$COMMIT_SHA'
-  
-# Steps 4: Kube CTL set Image
-- name: 'gcr.io/cloud-builders/kubectl'
-  args:
-  - 'set'
-  - 'image'
-  - 'deployment/cicdp5deployment'
-  - 'cicdp5image-sha256-1=gcr.io/gcp-class-1-427416/cicdp5image:$COMMIT_SHA'
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=cicdp5-cluster'
 
 options:
   logging: CLOUD_LOGGING_ONLY
